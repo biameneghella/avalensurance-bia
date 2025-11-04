@@ -21,10 +21,6 @@ CANDIDATE_KEYS = ["person_id", "policy_id", "record_id", "visit_id"]
 
 def smart_left_merge(base: pd.DataFrame, other: pd.DataFrame, other_name: str):
     keys = [k for k in CANDIDATE_KEYS if k in base.columns and k in other.columns]
-    if not keys:
-        print(f"⚠️ Nenhuma chave comum encontrada com {other_name}.")
-        return base
-    print(f"🔗 Mesclando {other_name} pelas chaves: {keys}")
     return base.merge(other, how="left", on=keys, suffixes=("", f"_{other_name}"))
 
 # --- Pipeline de junção ---
@@ -34,6 +30,16 @@ for name in ["clinical", "policy", "demographics", "lifestyle", "utilization"]:
 
 # Remove colunas duplicadas
 merged = merged.loc[:, ~merged.columns.duplicated()]
+
+# --- Reorganiza colunas ---
+# Garante que person_id esteja no início e os outros IDs no final para melhorar vizualizacao 
+cols = list(merged.columns)
+first_cols = [c for c in ["person_id"] if c in cols]
+last_cols = [c for c in ["cost_id", "policy_id", "record_id", "visit_id"] if c in cols]
+middle_cols = [c for c in cols if c not in first_cols + last_cols]
+
+# Nova ordem: person_id + resto + ids finais
+merged = merged[first_cols + middle_cols + last_cols]
 
 # --- Exporta resultado ---
 out_path = Path(f"{CSV_PATH}/full_warehouse_merged.csv")
