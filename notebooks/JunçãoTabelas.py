@@ -13,7 +13,7 @@ paths = {
     "utilization": f"{CSV_PATH}/utilization_cleaned.csv",
 }
 
-# --- Carrega os DataFrames ---
+# --- Carrega os DataFrames  ---
 dfs = {name: pd.read_csv(path) for name, path in paths.items()}
 
 # --- Função para unir com chaves detectadas automaticamente ---
