@@ -5,7 +5,7 @@ from pathlib import Path
 CSV_PATH = "/Users/augusto/Library/Mobile Documents/com~apple~CloudDocs/git/avalensurance-bia/data"
 
 # --- Arquivo completo (gerado anteriormente) ---
-file_path = f"{CSV_PATH}/full_warehouse_merged.csv"
+file_path = f"{CSV_PATH}/data/full_warehouse_method_B_sem_sklearn.csv"
 
 # --- Ler o CSV ---
 df = pd.read_csv(file_path)
@@ -16,7 +16,7 @@ mask_valid = ~df.isin([-1, "-1", "no_data", "NAO"])
 df_clean = df[mask_valid.all(axis=1)].copy()
 
 # --- Exportar resultado ---
-out_path = Path(f"{CSV_PATH}/onlyfulldata.csv")
+out_path = Path(f"{CSV_PATH}/onlyfulldata2.csv")
 df_clean.to_csv(out_path, index=False)
 
 # --- Mostrar resumo ---
