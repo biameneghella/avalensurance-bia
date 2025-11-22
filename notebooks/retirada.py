@@ -5,14 +5,14 @@ from pathlib import Path
 CSV_PATH = "/Users/augusto/Library/Mobile Documents/com~apple~CloudDocs/git/avalensurance-bia/data"
 
 # --- Arquivo completo (gerado anteriormente) ---
-file_path = f"{CSV_PATH}/data/full_warehouse_method_B_sem_sklearn.csv"
+file_path = f"{CSV_PATH}/annual_medical_costs_preenchido.csv"
 
 # --- Ler o CSV ---
 df = pd.read_csv(file_path)
 
 # --- Filtrar linhas ---
 # Remove linhas que tenham -1 (numérico ou string) ou 'no_data' em qualquer coluna
-mask_valid = ~df.isin([-1, "-1", "no_data", "NAO"])
+mask_valid = ~df.isin([-1, "-1"])
 df_clean = df[mask_valid.all(axis=1)].copy()
 
 # --- Exportar resultado ---
